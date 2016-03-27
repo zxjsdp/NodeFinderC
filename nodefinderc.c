@@ -4,7 +4,6 @@
 #include <string.h>
 
 #define MAX_INDEX_LIST_NUM 200
-#define MAX_SPECIES_NAME_LEN 200
 #define MULTIPLE_OF_BUFSIZE 2
 
 struct Calibration {
@@ -13,15 +12,9 @@ struct Calibration {
     char *cali_info;
 };
 
-struct Point {
-    int x;
-    int y;
-};
-
-
 
 // =======================================================
-// print functions for debuging
+// print functions
 // =======================================================
 
 void print_array(const int arr[], int size)
@@ -47,30 +40,25 @@ void printcali(struct Calibration cali)
     printf("%s, %s, %s\n", cali.name_a, cali.name_b, cali.cali_info);
 }
 
-void printpoint(struct Point point)
-{
-    printf("%s, %s\n", point.x, point.y);
-}
 
 
 // =======================================================
+// Utils functions
+// =======================================================
 
-
-
-char *make_str_clean(const char *str)
+char* make_str_clean(char* input)
 {
-    char *new = strdup(str);
-    char *out = new;
-    char *old = strdup(str);
-
-    while (*old != 0) {
-        *new = *old++;
-        if (*new != ' ' && *new != '\t' && *new != '\n' && *new != '\r')
-            new++;
+    int i,j;
+    char *output=input;
+    for (i = 0, j = 0; i<strlen(input); i++,j++)
+    {
+        if (input[i] != ' ' && input[i] != '\t' && input[i] != '\n' && input[i] != '\r')
+            output[j]=input[i];
+        else
+            j--;
     }
-    *new = '\0';
-
-    return out;
+    output[j]=0;
+    return output;
 }
 
 // int startswithchar(const char *str_a, const *char str_b)
@@ -101,10 +89,10 @@ char *stripchar(char *str, const char c)
     return s;
 }
 
-int countchar(const char *s, const char c)
+size_t countchar(const char *s, const char c)
 {
     int i;
-    int count;
+    size_t count;
 
     count = 0;
 
@@ -116,38 +104,9 @@ int countchar(const char *s, const char c)
     return count;
 }
 
-size_t get_index_of_substring(const char *src, const char *str)
+size_t get_index_of_substring(const char *srcstr, const char *substr)
 {
-    // Exceeded int size !!
-    char *result = strstr(src, str);
-    return result - src;
-
-   // ssize_t i, j, firstOcc;
-   // i = 0, j = 0;
- 
-   // while (src[i] != '\0') {
- 
-   //    while (src[i] != str[0] && src[i] != '\0')
-   //       i++;
- 
-   //    if (src[i] == '\0')
-   //       return (-1);
- 
-   //    firstOcc = i;
- 
-   //    while (src[i] == str[j] && src[i] != '\0' && str[j] != '\0') {
-   //       i++;
-   //       j++;
-   //    }
- 
-   //    if (str[j] == '\0')
-   //       return (firstOcc);
-   //    if (src[i] == '\0')
-   //       return (-1);
- 
-   //    i = firstOcc + 1;
-   //    j = 0;
-   // }
+    return strstr(srcstr, substr) - srcstr;
 }
 
 
@@ -177,7 +136,7 @@ char *sliced_string(const char *str, int start, int end)
     return s;
 }
 
-char ** split_by_delim(const char *str, const char *delim, size_t *num_tokens)
+char **split_by_delim(const char *str, const char *delim, size_t *num_tokens)
 {
     char *s = strdup(str);
     size_t tokens_alloc = 1;
@@ -215,6 +174,65 @@ char *concat_three_str(const size_t bufsize, const char *str1,
     return buf;
 }
 
+char *read_whole_str(const char *filename)
+{
+    FILE *fp;
+    long lsize;
+    char *buffer;
+
+    fp = fopen(filename , "r");
+    if(!fp) {
+        perror(filename);
+        exit(1);
+    }
+
+    fseek(fp, 0L, SEEK_END);
+    lsize = ftell(fp);
+    rewind(fp);
+
+    /* allocate memory for entire content */
+    buffer = calloc(1, lsize+1);
+    if(!buffer) {
+        fclose(fp);
+        fputs("memory alloc fails",stderr);
+        exit(1);
+    }
+
+    /* copy the file into the buffer */
+    if(1 != fread(buffer, lsize, 1, fp)) {
+        fclose(fp);
+        free(buffer);
+        fputs("entire read fails", stderr);
+        exit(1);
+    }
+
+    fclose(fp);
+    buffer = make_str_clean(buffer);
+    return buffer;
+}
+
+void write_str_to_file(const char *filename, const char *out_str)
+{
+    FILE *fp;
+
+    fp = fopen(filename, "w");
+    if (fp == NULL) {
+        perror(filename);
+        exit(1);
+    }
+
+    fputs(out_str, fp);
+    printf("Write to file: %s\n", filename);
+
+    fclose(fp);
+    exit(EXIT_SUCCESS);
+}
+
+
+// =======================================================
+// NodeFinder functions
+// =======================================================
+
 void get_insertion_list(const char *treestr, int *insertion_list, int *list_num, int indexnow)
 {
     size_t treelen = strlen(treestr);
@@ -239,13 +257,10 @@ void get_insertion_list(const char *treestr, int *insertion_list, int *list_num,
 
 int get_index_of_tmrca(const char *treestr, const char *name_a, const char *name_b)
 {
-    printf("================================================\n");
-    printf("%s, %s\n", name_a, name_b);
     int insertion_list_a[MAX_INDEX_LIST_NUM], insertion_list_b[MAX_INDEX_LIST_NUM];
     int list_num_a, list_num_b;
     size_t name_a_index, name_b_index;
     int shorter_list_num;
-    int *shorter_list, *longer_list;
     int i;
     int index_of_tmrca;
 
@@ -253,7 +268,7 @@ int get_index_of_tmrca(const char *treestr, const char *name_a, const char *name
 
     name_a_index = get_index_of_substring(treestr, name_a);
     name_b_index = get_index_of_substring(treestr, name_b);
-    printf("\nindex a: %d, index b: %d\n", name_a_index, name_b_index);
+//    printf("index a: %d, index b: %d\n", name_a_index, name_b_index);
 
     // get insertion list for each of the two species
     get_insertion_list(treestr, insertion_list_a, &list_num_a, name_a_index);
@@ -288,7 +303,7 @@ int get_index_of_tmrca(const char *treestr, const char *name_a, const char *name
         }
     }
 
-    printf("[Common]:         %d\n", index_of_tmrca);
+    printf("[Common]:  %d\n", index_of_tmrca);
     printf("\n[Insert]:  %s%s\n",
         sliced_string(treestr, index_of_tmrca-20, index_of_tmrca),
         sliced_string(treestr, index_of_tmrca, index_of_tmrca+20));
@@ -384,6 +399,9 @@ char *single_cali(char *treestr, struct Calibration *cali)
     int index_of_tmrca;
     char insertion_char;
 
+    printf("\n\n===============================================================================\n");
+    printf("%s, %s, %s\n", cali->name_a, cali->name_b, cali->cali_info);
+    printf("===============================================================================\n");
     index_of_tmrca = get_index_of_tmrca(treestr, cali->name_a, cali->name_b);
     insertion_char = treestr[index_of_tmrca];
 
@@ -417,48 +435,8 @@ char *multi_cali(char *clean_str, int cali_num, struct Calibration *calis[cali_n
     return clean_str;
 }
 
-char *read_whole_str(const char *filename)
-{
-    FILE *fp;
-    long lsize;
-    char *buffer;
-
-    fp = fopen(filename , "r");
-    if(!fp) {
-        perror(filename);
-        exit(1);
-    }
-
-    fseek(fp, 0L, SEEK_END);
-    lsize = ftell(fp);
-    rewind(fp);
-
-    /* allocate memory for entire content */
-    buffer = calloc(1, lsize+1);
-    if(!buffer) {
-        fclose(fp);
-        fputs("memory alloc fails",stderr);
-        exit(1);
-    }
-
-    /* copy the file into the buffer */
-    if(1 != fread(buffer, lsize, 1, fp)) {
-        fclose(fp);
-        free(buffer);
-        fputs("entire read fails", stderr);
-        exit(1);
-    }
-
-    fclose(fp);
-    if (buffer)
-        free(buffer);
-
-    return make_str_clean(buffer);
-}
-
 char *read_config_file(const char *config_file_name, size_t *line_num)
 {
-    // read whole config file as a array, without any blank character
     char *config_content;
 
     config_content = read_whole_str(config_file_name);
@@ -498,22 +476,6 @@ void parse_config(const char *config_content, size_t line_num, struct Calibratio
     }
 }
 
-void write_str_to_file(const char *filename, const char *out_str)
-{
-    FILE *fp;
-
-    fp = fopen(filename, "w");
-    if (fp == NULL) {
-        perror(filename);
-        exit(1);
-    }
-
-    fputs(out_str, fp);
-    printf("Write to file: %s\n", filename);
-
-    fclose(fp);
-    exit(EXIT_SUCCESS);
-}
 
 void test_main(void)
 {
@@ -664,28 +626,21 @@ int main(void)
     int i;
     char *newicktree = "((((human,(chimpanzee,bonobo)),gorilla),(borneo,sumatran)),gibbon);";
     // test_main();
-    char *clean_str;
-    char *config_content;
+    char *clean_str, *config_content;
     size_t line_num;
 
-    clean_str = read_whole_str("data/beetle.nwk");
-    config_content = read_config_file("data/beetle.ini", &line_num);
+    clean_str = read_whole_str("data/tree.nwk");
+    config_content = read_config_file("data/config.txt", &line_num);
 
-
+    /* Configuration parser */
     struct Calibration *calis[line_num];
     parse_config(config_content, line_num, calis);
 
+    /* Do calibrations */
     clean_str = multi_cali(clean_str, line_num, calis);
 
-    printf("%s\n", clean_str);
-    // write_str_to_file("_out_beetle.nwk", clean_str);
-
-    // ssize_t a;
-    // printf("%zd\n", strlen(clean_str));
-    // a = get_index_of_substring(clean_str, "CSU81583_Cuticularia_sp");
-    // printf("%ld\n", a);
-
-
+//    printf("%s\n", clean_str);
+//    write_str_to_file("_out_beetle.nwk", clean_str);
 
     return 0;
 }
