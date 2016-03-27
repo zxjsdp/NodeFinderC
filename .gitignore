@@ -27,8 +27,13 @@
 *.i*86
 *.x86_64
 *.hex
+nodefinderc
 
 # Debug files
 *.dSYM/
 *.stackdump
 data
+
+#JetBrains
+.idea
+CMakeLists.*
