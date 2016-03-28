@@ -396,7 +396,7 @@ char *single_cali(char *treestr, struct Calibration *cali)
 
     printf("\n\n%s", BAR);
     printf("%s, %s, %s\n", cali->name_a, cali->name_b, cali->cali_info);
-    printf(BAR);
+    printf("%s", BAR);
     index_of_tmrca = get_index_of_tmrca(treestr, cali->name_a, cali->name_b);
     insertion_char = treestr[index_of_tmrca];
 
@@ -544,8 +544,8 @@ int argparser (int argc, char **argv, int *help_flag,
                 abort ();
         }
 
-    printf(BAR);
-    printf("Command used:\n");
+    printf("%s", BAR);
+    printf("[COMMAND USED]\n\n    ");
     for (i=0; i<argc; i++) {
         printf("%s ", argv[i]);
     }
@@ -575,7 +575,7 @@ int argparser (int argc, char **argv, int *help_flag,
         exit(EXIT_FAILURE);
     }
 
-    printf(BAR);
+    printf("%s", BAR);
 
     for (index = optind; index < argc; index++)
         printf ("Non-option argument %s\n", argv[index]);
