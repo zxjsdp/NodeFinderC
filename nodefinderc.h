@@ -54,7 +54,7 @@ char *multi_cali(char *clean_str, int cali_num, struct Calibration *calis[cali_n
 char *read_config_file(const char *config_file_name, size_t *line_num);
 void parse_config(const char *config_content, size_t line_num, struct Calibration *calis[line_num]);
 void show_help_message();
-int argparser (int argc, char **argv, int *help_flag,
+int argparser (int argc, char **argv,
                char **infile_value,
                char **outfile_value,
                char **config_file_value);
