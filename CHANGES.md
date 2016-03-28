@@ -11,4 +11,3 @@ Feature:
 
 - Implements NodeFinder basic algorithm
 - Add command line arguments
-
