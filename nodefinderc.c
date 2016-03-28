@@ -4,17 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
-#define MAX_INDEX_LIST_NUM 200
-#define MULTIPLE_OF_BUFSIZE 2
-
-const char *BAR = "=======================================================================\n";
-
-struct Calibration {
-    char *name_a;
-    char *name_b;
-    char *cali_info;
-};
+#include "nodefinderc.h"
 
 
 // =======================================================
@@ -428,7 +418,8 @@ char *single_cali(char *treestr, struct Calibration *cali)
     return treestr;
 }
 
-char *multi_cali(char *clean_str, int cali_num, struct Calibration *calis[cali_num]) {
+char *multi_cali(char *clean_str, int cali_num, struct Calibration *calis[cali_num])
+{
     int i;
     struct Calibration *cali_now;
 
