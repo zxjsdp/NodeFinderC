@@ -480,7 +480,14 @@ void show_help_message()
     printf("    -i   Input file name       (necessary)\n");
     printf("    -c   Config file name      (necessary) \n");
     printf("    -o   Output file name      (necessary) \n");
-    printf("    -h   Display help message  (optional, should be used alone) \n");
+    printf("    -h   Display help message  (optional, should be used alone) \n\n");
+
+    printf("[CONFIG FILE SYNTAX]\n\n");
+    printf("    name_a, name_b, calibration_infomation_1;\n");
+    printf("    name_c, name_d, calibration_infomation_2;\n");
+    printf("    name_a, name_b, clade_label_information;\n");
+    printf("    name, branch_label_information;\n");
+    printf("    ..., ..., ...;\n");
     exit(EXIT_SUCCESS);
 }
 
