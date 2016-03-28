@@ -14,8 +14,15 @@ If you prefer programs with GUI (Graphical User Interface), please check the GUI
 How to compile
 --------------
 
-    gcc nodefinderc.c -o nodefinder
+Make install
 
+    make install
+
+Or:
+
+    gcc nodefinderc.c -o bin/nodefinderc-latest
+
+After compiling, you can find NodeFinderC executable in `bin/` folder.
 
 Usage
 -----
