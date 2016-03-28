@@ -39,6 +39,10 @@ You can read help message with `-h` argument:
 
     /path/to/nodefinder -h
 
+You can read version information with `-v` argument:
+
+    /path/to/nodefinder -v
+
 Tips:
 
 - `-i`, `-c`, and `-o` must be specified.
@@ -46,6 +50,7 @@ Tips:
 - `-c` means config_file.txt, please refer to **Configuaration File Syntax** part;
 - `-o` means output_tree.nwk, which will be the new generated output Newick format tree file.
 - `-h` will print help message then quit, whether other arguments were specified or not.
+- `-v` will print version info then quit, whether other arguments were specified or not.
 
 
 Configuration File Syntax
