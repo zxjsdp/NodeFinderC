@@ -6,6 +6,8 @@ Introduction
 
 NodeFinderC is C implementation of NodeFinder program(Originally implemented with Python).
 
+If you prefer programs with GUI (Graphical User Interface), please check the GUI version of NodeFinder: [NodeFinderGUI](https://github.com/zxjsdp/NodeFinderGUI).
+
 
 Usage
 -----
@@ -24,6 +26,7 @@ Tips:
 - `-i` means input_tree.nwk, which is a Newick format tree file;
 - `-c` means config_file.txt, please refer to **Configuaration File Syntax** part;
 - `-o` means output_tree.nwk, which will be the new generated output Newick format tree file.
+- `-h` will print help message then quit, whether other arguments were specified or not.
 
 
 Configuration File Syntax
@@ -39,6 +42,6 @@ Overview:
 
 Tips:
 
-- Elemenets in each line should be seperated by `,`;
-- Each config line must end with a `;`;
+- Elemenets in each line should be seperated by commas (halfwidth): `,`;
+- Each config line must end with a semicolon (halfwidth): `;`;
 - Spaces, newlines, tabs are acceptable in config file, the program will ignore them;
