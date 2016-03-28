@@ -37,3 +37,6 @@ data
 #JetBrains
 .idea
 CMakeLists.*
+
+# Tree Files
+*.nwk
