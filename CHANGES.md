@@ -1,6 +1,16 @@
 CHANGES
 =======
 
+Version 1.1.4
+-------------
+
+Released: 2016-03-28
+
+Bugfix:
+
+- Fix \r line ending issues for bash script.
+
+
 Version 1.1.3
 -------------
 
