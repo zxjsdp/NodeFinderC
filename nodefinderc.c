@@ -228,6 +228,12 @@ void write_str_to_file(const char *filename, const char *out_str)
 // NodeFinder functions
 // =======================================================
 
+void print_version()
+{
+    printf("NodeFinderC Version: %s\n", NODEFINDERC_VERSION);
+    exit(EXIT_SUCCESS);
+}
+
 void get_insertion_list(const char *treestr, int *insertion_list, int *list_num, int indexnow)
 {
     size_t treelen = strlen(treestr);
@@ -478,9 +484,10 @@ void show_help_message()
     printf("    /path/to/nodefinderc -i infile -c config_file -o output_file\n\n");
     printf("[ARGUMENTS]\n\n");
     printf("    -i   Input file name       (necessary)\n");
-    printf("    -c   Config file name      (necessary) \n");
-    printf("    -o   Output file name      (necessary) \n");
-    printf("    -h   Display help message  (optional, should be used alone) \n\n");
+    printf("    -c   Config file name      (necessary)\n");
+    printf("    -o   Output file name      (necessary)\n");
+    printf("    -h   Display help message  (optional, should be used alone)\n");
+    printf("    -v   Display version       (optional, should be used alone) \n\n");
 
     printf("[CONFIG FILE SYNTAX]\n\n");
     printf("    name_a, name_b, calibration_infomation_1;\n");
@@ -491,7 +498,7 @@ void show_help_message()
     exit(EXIT_SUCCESS);
 }
 
-int argparser (int argc, char **argv, int *help_flag,
+int argparser (int argc, char **argv,
                char **infile_value,
                char **outfile_value,
                char **config_file_value)
@@ -499,17 +506,23 @@ int argparser (int argc, char **argv, int *help_flag,
     int i;
     int index;
     int c;
+    int help_flag;
+    int version_flag;
 
-    *help_flag = 0;
+    help_flag = 0;
+    version_flag = 0;
     *infile_value = NULL;
     *outfile_value = NULL;
     *config_file_value = NULL;
     opterr = 0;
 
-    while ((c = getopt (argc, argv, "hi:c:o:")) != -1)
+    while ((c = getopt (argc, argv, "hvi:c:o:")) != -1)
         switch (c) {
             case 'h':
-                *help_flag = 1;
+                help_flag = 1;
+                break;
+            case 'v':
+                version_flag = 1;
                 break;
             case 'i':
                 *infile_value = optarg;
@@ -539,10 +552,17 @@ int argparser (int argc, char **argv, int *help_flag,
                     fprintf (stderr,
                              "Unknown option character `\\x%x'.\n",
                              optopt);
+                show_help_message();
                 return 1;
             default:
-                abort ();
+                abort();
         }
+
+    if (help_flag)
+        show_help_message();
+
+    if (version_flag)
+        print_version();
 
     printf("%s", BAR);
     printf("[COMMAND USED]\n\n    ");
@@ -550,9 +570,6 @@ int argparser (int argc, char **argv, int *help_flag,
         printf("%s ", argv[i]);
     }
     printf("\n\n");
-
-    if (*help_flag)
-        show_help_message();
 
     if (*infile_value)
         printf("    -i   Input tree file:    %s\n", *infile_value);
@@ -585,14 +602,13 @@ int argparser (int argc, char **argv, int *help_flag,
 int main(int argc, char **argv)
 {
     int argparser_state;
-    int help_flag;
     char *infile_value;
     char *outfile_value;
     char *config_file_value;
     char *clean_str, *config_content;
     size_t line_num;
 
-    argparser_state = argparser(argc, argv, &help_flag,
+    argparser_state = argparser(argc, argv,
                                 &infile_value,
                                 &outfile_value,
                                 &config_file_value);

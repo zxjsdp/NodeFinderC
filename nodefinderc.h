@@ -5,6 +5,7 @@
 #include <string.h>
 #include <unistd.h>
 
+#define NODEFINDERC_VERSION "1.1.3"
 #define MAX_INDEX_LIST_NUM 200
 #define MULTIPLE_OF_BUFSIZE 2
 
@@ -41,6 +42,7 @@ void write_str_to_file(const char *filename, const char *out_str);
 
 
 // NodeFinder functions
+void print_version();
 void get_insertion_list(const char *treestr, int *insertion_list, int *list_num, int indexnow);
 int get_index_of_tmrca(const char *treestr, const char *name_a, const char *name_b);
 char *get_exists_cali(const char *right_part);
@@ -52,7 +54,7 @@ char *multi_cali(char *clean_str, int cali_num, struct Calibration *calis[cali_n
 char *read_config_file(const char *config_file_name, size_t *line_num);
 void parse_config(const char *config_content, size_t line_num, struct Calibration *calis[line_num]);
 void show_help_message();
-int argparser (int argc, char **argv, int *help_flag,
+int argparser (int argc, char **argv,
                char **infile_value,
                char **outfile_value,
                char **config_file_value);
