@@ -1,6 +1,14 @@
 CHANGES
 =======
 
+Version 1.1
+-----------
+
+Released: 2016-03-28
+
+Feature:
+
+- More reasonable project structure.
 
 Version 1.0
 -----------
