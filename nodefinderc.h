@@ -5,7 +5,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#define NODEFINDERC_VERSION "1.1.3"
+#define NODEFINDERC_VERSION "1.1.4"
 #define MAX_INDEX_LIST_NUM 200
 #define MULTIPLE_OF_BUFSIZE 2
 

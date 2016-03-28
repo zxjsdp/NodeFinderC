@@ -6,7 +6,7 @@ Introduction
 
 NodeFinderC is C implementation of NodeFinder program(Originally implemented with Python).
 
-Precompiled binary executables can be downloaded here: [Windows & Linux executables](https://github.com/zxjsdp/NodeFinderC/tree/master/bin/).
+Precompiled binary executables can be downloaded here: [Windows & Linux & MacOS executables](https://github.com/zxjsdp/NodeFinderC/tree/master/bin/).
 
 If you prefer programs with GUI (Graphical User Interface), please check the GUI version of NodeFinder: [NodeFinderGUI](https://github.com/zxjsdp/NodeFinderGUI).
 
@@ -18,9 +18,13 @@ Make install
 
     make install
 
-Or:
+Or
 
     gcc nodefinderc.c -o bin/nodefinderc-latest
+
+Or
+
+    cd scripts && bash compile_to_bin.sh
 
 After compiling, you can find NodeFinderC executable in `bin/` folder.
 
