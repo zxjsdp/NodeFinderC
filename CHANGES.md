@@ -1,6 +1,17 @@
 CHANGES
 =======
 
+Version 1.1.3
+-------------
+
+Released: 2016-03-28
+
+Feature:
+
+- Add version info argument `-v`.
+- Add a script for quick compilation on all platformat for latest version.
+
+
 Version 1.1.2
 -------------
 
