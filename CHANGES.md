@@ -1,6 +1,18 @@
 CHANGES
 =======
 
+Version 1.1.2
+-------------
+
+Released: 2016-03-28
+
+Feature:
+
+- Add precompiled binary files for common platforms: Windows & Linux.
+- Add Makefile.
+- Add compile information to README.
+
+
 Version 1.1.1
 -------------
 
