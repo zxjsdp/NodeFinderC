@@ -228,6 +228,11 @@ void write_str_to_file(const char *filename, const char *out_str)
 // NodeFinder functions
 // =======================================================
 
+void print_version()
+{
+    printf("NodeFinderC Version: %s\n", NODEFINDERC_VERSION);
+}
+
 void get_insertion_list(const char *treestr, int *insertion_list, int *list_num, int indexnow)
 {
     size_t treelen = strlen(treestr);

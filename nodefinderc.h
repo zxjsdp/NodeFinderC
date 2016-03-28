@@ -5,6 +5,7 @@
 #include <string.h>
 #include <unistd.h>
 
+#define NODEFINDERC_VERSION "1.1.3"
 #define MAX_INDEX_LIST_NUM 200
 #define MULTIPLE_OF_BUFSIZE 2
 
@@ -41,6 +42,7 @@ void write_str_to_file(const char *filename, const char *out_str);
 
 
 // NodeFinder functions
+void print_version();
 void get_insertion_list(const char *treestr, int *insertion_list, int *list_num, int indexnow);
 int get_index_of_tmrca(const char *treestr, const char *name_a, const char *name_b);
 char *get_exists_cali(const char *right_part);
