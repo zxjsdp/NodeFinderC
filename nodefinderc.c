@@ -481,6 +481,18 @@ void parse_config(const char *config_content, size_t line_num, struct Calibratio
     }
 }
 
+void show_help_message()
+{
+    printf("[USAGE]\n\n");
+    printf("    /path/to/nodefinderc -i infile -c config_file -o output_file\n\n");
+    printf("[ARGUMENTS]\n\n");
+    printf("    -i   Input file name       (necessary)\n");
+    printf("    -c   Config file name      (necessary) \n");
+    printf("    -o   Output file name      (necessary) \n");
+    printf("    -h   Display help message  (optional, should be used alone) \n");
+    exit(EXIT_SUCCESS);
+}
+
 int argparser (int argc, char **argv, int *help_flag,
                char **infile_value,
                char **outfile_value,
@@ -542,24 +554,24 @@ int argparser (int argc, char **argv, int *help_flag,
     printf("\n\n");
 
     if (*help_flag)
-        printf("  -h   Show help message\n");
+        show_help_message();
 
     if (*infile_value)
-        printf("  -i   Input tree file:    %s\n", *infile_value);
+        printf("    -i   Input tree file:    %s\n", *infile_value);
     else {
         printf("\nERROR: -i \"input_tree_file\" must be specified\n");
         exit(EXIT_FAILURE);
     }
 
     if (*config_file_value)
-        printf("  -c   Config file:        %s\n", *config_file_value);
+        printf("    -c   Config file:        %s\n", *config_file_value);
     else {
         printf("\nERROR: \"-c config_file\" must be specified\n");
         exit(EXIT_FAILURE);
     }
 
     if (*outfile_value)
-        printf("  -o   Output tree file:   %s\n", *outfile_value);
+        printf("    -o   Output tree file:   %s\n", *outfile_value);
     else {
         printf("\nERROR: \"-o output_tree_filename\" must be specified\n");
         exit(EXIT_FAILURE);
@@ -574,7 +586,6 @@ int argparser (int argc, char **argv, int *help_flag,
 
 int main(int argc, char **argv)
 {
-    int i;
     int argparser_state;
     int help_flag;
     char *infile_value;
