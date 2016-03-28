@@ -1,6 +1,21 @@
 CHANGES
 =======
 
+
+Version 1.1.4.1
+---------------
+
+Released: 2016-03-28
+
+Feature:
+
+- Add MacOS executable.
+
+Improve:
+
+- Remove old executable.
+
+
 Version 1.1.4
 -------------
 
