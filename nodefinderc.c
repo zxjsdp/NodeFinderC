@@ -1,10 +1,14 @@
 #define _GNU_SOURCE
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #define MAX_INDEX_LIST_NUM 200
 #define MULTIPLE_OF_BUFSIZE 2
+
+const char *BAR = "=======================================================================\n";
 
 struct Calibration {
     char *name_a;
@@ -222,7 +226,8 @@ void write_str_to_file(const char *filename, const char *out_str)
     }
 
     fputs(out_str, fp);
-    printf("Write to file: %s\n", filename);
+    printf("\n\n%s\n", BAR);
+    printf("Write output to file: %s\n", filename);
 
     fclose(fp);
     exit(EXIT_SUCCESS);
@@ -399,9 +404,9 @@ char *single_cali(char *treestr, struct Calibration *cali)
     int index_of_tmrca;
     char insertion_char;
 
-    printf("\n\n===============================================================================\n");
+    printf("\n\n%s", BAR);
     printf("%s, %s, %s\n", cali->name_a, cali->name_b, cali->cali_info);
-    printf("===============================================================================\n");
+    printf(BAR);
     index_of_tmrca = get_index_of_tmrca(treestr, cali->name_a, cali->name_b);
     insertion_char = treestr[index_of_tmrca];
 
@@ -476,161 +481,138 @@ void parse_config(const char *config_content, size_t line_num, struct Calibratio
     }
 }
 
-
-void test_main(void)
+void show_help_message()
 {
-    // =======================================================
-    // Test make tree clean
-    // =======================================================
-    // char *test = "the fox jump\tover\n";
-    // printf("%s\n", make_str_clean(test));
-    // =======================================================
-
-
-    // =======================================================
-    // Initialization
-    // =======================================================
-    // int i;
-    char *newicktree = "((((human,(chimpanzee,bonobo)),gorilla),(borneo,sumatran)),gibbon);";
-    // char *name_a = "human";
-    // char *name_b = "sumatran";
-    // char *name_c = "gibbon";
-    // =======================================================
-
-
-    // =======================================================
-    // Get insertion_list
-    // =======================================================
-    // int insertion_list[MAX_INDEX_LIST_NUM];
-    // int insertion_list_num;
-
-    // get_insertion_list(newicktree, insertion_list, insertion_list_num, 5);
-
-    // for (i=0; i<insertion_list_num; i++) {
-    //     printf("%d\n", insertion_list[i]);
-    // }
-    // =======================================================
-
-
-    // =======================================================
-    // Test get index of the most recent ancestor
-    // =======================================================
-    // get_index_of_tmrca(newicktree, "human", "sumatran");
-
-    //            111111111122222222223333333333444444444455555555556666666
-    //  0123456789012345678901234567890123456789012345678901234567890123456
-    //             |
-    // "((((human,(chimpanzee,bonobo)),gorilla),(borneo,sumatran)),gibbon);"
-
-    // get_insertion_list(newicktree, list, &list_num, aa);
-    // get_insertion_list(newicktree, list, &list_num, bb);
-    // get_index_of_tmrca(newicktree, "chimpanzee", "bonobo");
-    // =======================================================
-
-
-    // =======================================================
-    // Test slice string
-    // =======================================================
-    // printf("Sliced: %s\n", sliced_string("abcdefghij", 3, 5));
-    // =======================================================
-
-
-    // =======================================================
-    // Test single calibration
-    // =======================================================
-    // printf("%s\n", add_cali(newicktree, 7, ">0.13<0.16"));
-    // printf("%s\n", single_cali(newicktree, name_a, name_b, ">0.13<0.16"));
-    // printf("%s\n", single_cali(newicktree, name_a, name_c, ">0.29"));
-
-    // struct Calibration *cali1;
-    // cali1 = malloc(sizeof(struct Calibration));
-    // cali1->name_a = "human";
-    // cali1->name_b = "bonobo";
-    // cali1->cali_info = ">0.1";
-    // printf("%s, %s, %s\n", cali1->name_a, cali1->name_b, cali1->cali_info);
-    // =======================================================
-
-
-    // =======================================================
-    // Test multiple calibrations
-    // =======================================================
-    // struct Calibration *calibrations[] = {
-    //     &(struct Calibration) {"human", "bonobo", ">0.1<0.2"},
-    //     &(struct Calibration) {"human", "sumatran", ">0.4<0.5"},
-    // };
-
-    // printf("%s\n", multi_cali(newicktree, 2, calibrations));
-    // =======================================================
-
-
-    // =======================================================
-    // remove exists calibration information
-    // =======================================================
-    // printf("%s\n", find_non_cali_pointer(">0.12<0.24),gorilla),(borneo,sumatran)),gibbon);"));
-    // printf("%s\n", find_non_cali_pointer(">0.12<0.24,(borneo,sumatran)),gibbon);"));
-    // printf("%s\n", find_non_cali_pointer(">0.12<0.24;"));
-
-    // char *right_part;
-    // right_part = ">0.12<0.24,(borneo,sumatran)),gibbon);";
-    // printf("%s\n", get_exists_cali(right_part));
-    // printf("%s\n", find_non_cali_pointer(right_part));
-
-    struct Calibration *calibrations[] = {
-        &(struct Calibration) {"human", "bonobo", ">0.1<0.2"},
-        &(struct Calibration) {"human", "bonobo", ">0.2<0.3"},
-        &(struct Calibration) {"human", "sumatran", ">0.4<0.5"},
-    };
-    // printf("%s\n", multi_cali(newicktree, 3, calibrations));
-    // =======================================================
-
-
-    // =======================================================
-    // Test count char from string
-    // =======================================================
-    // printf("%d\n", countchar("the.quick.fox.jumped..over", '.'));
-    // =======================================================
-
-
-    // =======================================================
-    // Test read whole string from file
-    // =======================================================
-    // printf("%s\n", read_whole_str("test.txt"));
-    // =======================================================
-
-
-    // =======================================================
-    // Test read config file
-    // =======================================================
-    // char *config_content;
-    // size_t line_num;
-    // config_content = read_config_file("config.txt", &line_num);
-    // // printf("%s\n", config_content);
-    // // printf("%d\n", line_num);
-
-    // struct Calibration *calis[line_num];
-    // parse_config(config_content, line_num, calis);
-    // =======================================================
-
-
-    // =======================================================
-    // Test print calibration struct
-    // =======================================================
-    // print_cali_struct(3, calibrations);
-    // =======================================================
-
+    printf("[USAGE]\n\n");
+    printf("    /path/to/nodefinderc -i infile -c config_file -o output_file\n\n");
+    printf("[ARGUMENTS]\n\n");
+    printf("    -i   Input file name       (necessary)\n");
+    printf("    -c   Config file name      (necessary) \n");
+    printf("    -o   Output file name      (necessary) \n");
+    printf("    -h   Display help message  (optional, should be used alone) \n");
+    exit(EXIT_SUCCESS);
 }
 
-
-int main(void)
+int argparser (int argc, char **argv, int *help_flag,
+               char **infile_value,
+               char **outfile_value,
+               char **config_file_value)
 {
     int i;
-    char *newicktree = "((((human,(chimpanzee,bonobo)),gorilla),(borneo,sumatran)),gibbon);";
-    // test_main();
+    int index;
+    int c;
+
+    *help_flag = 0;
+    *infile_value = NULL;
+    *outfile_value = NULL;
+    *config_file_value = NULL;
+    opterr = 0;
+
+    while ((c = getopt (argc, argv, "hi:c:o:")) != -1)
+        switch (c) {
+            case 'h':
+                *help_flag = 1;
+                break;
+            case 'i':
+                *infile_value = optarg;
+                break;
+            case 'c':
+                *config_file_value = optarg;
+                break;
+            case 'o':
+                *outfile_value = optarg;
+                break;
+            case '?':
+                if (optopt == 'i')
+                    fprintf (stderr,
+                             "Option -%c requires an argument (input tree file name).\n",
+                             optopt);
+                else if (optopt == 'c')
+                    fprintf (stderr,
+                             "Option -%c requires an argument (config file name).\n",
+                             optopt);
+                else if (optopt == 'o')
+                    fprintf (stderr,
+                             "Option -%c requires an argument (output tree file name).\n",
+                             optopt);
+                else if (isprint (optopt))
+                    fprintf (stderr, "Unknown option `-%c'.\n", optopt);
+                else
+                    fprintf (stderr,
+                             "Unknown option character `\\x%x'.\n",
+                             optopt);
+                return 1;
+            default:
+                abort ();
+        }
+
+    printf(BAR);
+    printf("Command used:\n");
+    for (i=0; i<argc; i++) {
+        printf("%s ", argv[i]);
+    }
+    printf("\n\n");
+
+    if (*help_flag)
+        show_help_message();
+
+    if (*infile_value)
+        printf("    -i   Input tree file:    %s\n", *infile_value);
+    else {
+        printf("\nERROR: -i \"input_tree_file\" must be specified\n");
+        exit(EXIT_FAILURE);
+    }
+
+    if (*config_file_value)
+        printf("    -c   Config file:        %s\n", *config_file_value);
+    else {
+        printf("\nERROR: \"-c config_file\" must be specified\n");
+        exit(EXIT_FAILURE);
+    }
+
+    if (*outfile_value)
+        printf("    -o   Output tree file:   %s\n", *outfile_value);
+    else {
+        printf("\nERROR: \"-o output_tree_filename\" must be specified\n");
+        exit(EXIT_FAILURE);
+    }
+
+    printf(BAR);
+
+    for (index = optind; index < argc; index++)
+        printf ("Non-option argument %s\n", argv[index]);
+    return 0;
+}
+
+int main(int argc, char **argv)
+{
+    int argparser_state;
+    int help_flag;
+    char *infile_value;
+    char *outfile_value;
+    char *config_file_value;
     char *clean_str, *config_content;
     size_t line_num;
 
-    clean_str = read_whole_str("data/tree.nwk");
-    config_content = read_config_file("data/config.txt", &line_num);
+    argparser_state = argparser(argc, argv, &help_flag,
+                                &infile_value,
+                                &outfile_value,
+                                &config_file_value);
+    if (argparser_state) {
+        exit(EXIT_FAILURE);
+    }
+
+    clean_str = read_whole_str(infile_value);
+    config_content = read_config_file(config_file_value, &line_num);
+
+    if (!clean_str) {
+        printf("Not valid infile: %s\n", infile_value);
+        exit(EXIT_FAILURE);
+    }
+    if (!config_content) {
+        printf("Not valid config file: %s\n", config_file_value);
+        exit(EXIT_FAILURE);
+    }
 
     /* Configuration parser */
     struct Calibration *calis[line_num];
@@ -639,8 +621,8 @@ int main(void)
     /* Do calibrations */
     clean_str = multi_cali(clean_str, line_num, calis);
 
-//    printf("%s\n", clean_str);
-//    write_str_to_file("_out_beetle.nwk", clean_str);
+    /* Save output to file */
+    write_str_to_file(outfile_value, clean_str);
 
     return 0;
 }

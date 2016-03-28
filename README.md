@@ -12,11 +12,11 @@ Usage
 
 Basic usage:
 
-    ./nodefinder -i input_tree.nwk -c config_file.txt -o output_tree.nwk
+    /path/to/nodefinder -i input_tree.nwk -c config_file.txt -o output_tree.nwk
 
 You can read help message with `-h` argument:
 
-    ./nodefinder -h
+    /path/to/nodefinder -h
 
 
 Configuration File Syntax
