@@ -2,6 +2,8 @@
 
 # This script is used for compile to binary files
 # and add version information
+#
+# Usage: cd scripts && bash ./compile_to_bin.sh
 
 
 UNAMES="$(uname -s)"
