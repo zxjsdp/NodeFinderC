@@ -69,3 +69,5 @@ Tips:
 - Elemenets in each line should be seperated by commas (halfwidth): `,`;
 - Each config line must end with a semicolon (halfwidth): `;`;
 - Spaces, newlines, tabs are acceptable in config file, the program will ignore them;
+- You can comment a line (make it ignored) by adding # at the beginning of the line;
+
