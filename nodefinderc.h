@@ -8,6 +8,8 @@
 #define NODEFINDERC_VERSION "1.1.4.1"
 #define MAX_INDEX_LIST_NUM 200
 #define MULTIPLE_OF_BUFSIZE 2
+#define MAX_CONFIG_LINE_LEN 500
+#define COMMENT_SYMBOL '#'
 
 const char *BAR = "=======================================================================\n";
 
@@ -51,8 +53,9 @@ char *add_cali(const char *treestr, int index_of_tmrca, const char *cali_info);
 char *modify_exists_cali(const char *treestr, int index_of_tmrca, const char *cali_info);
 char *single_cali(char *treestr, struct Calibration *cali);
 char *multi_cali(char *clean_str, int cali_num, struct Calibration *calis[cali_num]);
-char *read_config_file(const char *config_file_name, size_t *line_num);
-void parse_config(const char *config_content, size_t line_num, struct Calibration *calis[line_num]);
+size_t read_config_lines(const char *config_file_name, char *valid_config_lines[]);
+void parse_config(char *valid_config_lines[], size_t valid_line_num,
+                  struct Calibration *calis[valid_line_num]);
 void show_help_message();
 int argparser (int argc, char **argv,
                char **infile_value,
