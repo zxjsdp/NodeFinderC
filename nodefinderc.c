@@ -437,35 +437,51 @@ char *multi_cali(char *clean_str, int cali_num, struct Calibration *calis[cali_n
     return clean_str;
 }
 
-char *read_config_file(const char *config_file_name, size_t *line_num)
+size_t read_config_lines(const char *config_file_name, char *valid_config_lines[])
 {
-    char *config_content;
+    FILE *fp;
+    char *line = NULL;
+    size_t len = 0;
+    ssize_t read;
+    size_t valid_line_num;
 
-    config_content = read_whole_str(config_file_name);
+    valid_line_num = 0;
+    fp = fopen(config_file_name, "r");
+    if (fp == NULL) {
+        printf("ERROR: cannot read config file: %s\n", config_file_name);
+        exit(EXIT_FAILURE);
+    }
 
-    // strip leading and traling ; character
-    config_content = stripchar(config_content, ';');
+    while ((read = getline(&line, &len, fp)) != -1) {
+        line = make_str_clean(line);
+        if (*line != COMMENT_SYMBOL) {
+            valid_config_lines[valid_line_num++] = strdup(line);
+        }
+    }
 
-    // get config line number according to count of ; character
-    *line_num = countchar(config_content, ';') + 1;
-
-    return config_content;
+    fclose(fp);
+    if (line)
+        free(line);
+    return valid_line_num;
 }
 
-void parse_config(const char *config_content, size_t line_num, struct Calibration *calis[line_num])
+void parse_config(char *valid_config_lines[], size_t valid_line_num,
+                  struct Calibration *calis[valid_line_num])
 {
     int i;
-    char **config_lines;
     char **elements;
-    size_t line_num_useless;
     size_t elements_num_per_line;
 
-    // // get all config lines by split config_content by ;
-    config_lines = split_by_delim(config_content, ";", &line_num_useless);
+    if (valid_line_num == 0) {
+        printf("No valid calibration line in config file!\n");
+        exit(EXIT_FAILURE);
+    }
 
-    for (i=0; i<line_num; i++) {
+    for (i=0; i<valid_line_num; i++) {
+        // Remove trailing ';' if exists
+        valid_config_lines[i] = stripchar(valid_config_lines[i], ';');
         // elements: {"name_a", "name_b", "cali_info"}
-        elements = split_by_delim(config_lines[i], ",", &elements_num_per_line);
+        elements = split_by_delim(valid_config_lines[i], ",", &elements_num_per_line);
         if (elements_num_per_line != 3) {
             printf("Config file syntax error. Line: %d\n", i+1);
             exit(1);
@@ -605,8 +621,9 @@ int main(int argc, char **argv)
     char *infile_value;
     char *outfile_value;
     char *config_file_value;
-    char *clean_str, *config_content;
-    size_t line_num;
+    char *clean_str;
+    char *valid_config_lines[MAX_CONFIG_LINE_LEN];
+    size_t valid_line_num;
 
     argparser_state = argparser(argc, argv,
                                 &infile_value,
@@ -617,23 +634,19 @@ int main(int argc, char **argv)
     }
 
     clean_str = read_whole_str(infile_value);
-    config_content = read_config_file(config_file_value, &line_num);
+    valid_line_num = read_config_lines(config_file_value, valid_config_lines);
 
     if (!clean_str) {
         printf("Not valid infile: %s\n", infile_value);
         exit(EXIT_FAILURE);
     }
-    if (!config_content) {
-        printf("Not valid config file: %s\n", config_file_value);
-        exit(EXIT_FAILURE);
-    }
 
     /* Configuration parser */
-    struct Calibration *calis[line_num];
-    parse_config(config_content, line_num, calis);
+    struct Calibration *calis[valid_line_num];
+    parse_config(valid_config_lines, valid_line_num ,calis);
 
     /* Do calibrations */
-    clean_str = multi_cali(clean_str, line_num, calis);
+    clean_str = multi_cali(clean_str, valid_line_num, calis);
 
     /* Save output to file */
     write_str_to_file(outfile_value, clean_str);
