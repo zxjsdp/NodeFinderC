@@ -1,6 +1,15 @@
 CHANGES
 =======
 
+Version 1.1.5
+---------------
+
+Released: 2016-04-05
+
+Feature:
+
+- Add comment line feature.
+
 
 Version 1.1.4.1
 ---------------
