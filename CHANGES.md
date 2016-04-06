@@ -1,6 +1,16 @@
 CHANGES
 =======
 
+Version 1.1.6
+-------------
+
+Released:
+
+Improve:
+- Display valid calibration informations
+- Refine outcome display style
+
+
 Version 1.1.5
 -------------
 
