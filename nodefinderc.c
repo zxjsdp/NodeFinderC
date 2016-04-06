@@ -15,6 +15,7 @@ void print_array(const int arr[], int size)
 {
     int i;
 
+    printf("[Ancestor List]:  ");
     for (i=0; i<size; i++)
         printf("%d ", arr[i]);
     printf("\n");
@@ -284,10 +285,8 @@ int get_index_of_tmrca(const char *treestr, const char *name_a, const char *name
     reverse_array(insertion_list_a, 0, list_num_a-1);
     reverse_array(insertion_list_b, 0, list_num_b-1);
 
-    printf("---------------------------------\n");
     print_array(insertion_list_a, list_num_a);
     print_array(insertion_list_b, list_num_b);
-    printf("---------------------------------\n");
 
     // find longer insertiton list
     shorter_list_num = list_num_a < list_num_b ? \
@@ -405,9 +404,9 @@ char *single_cali(char *treestr, struct Calibration *cali)
     int index_of_tmrca;
     char insertion_char;
 
-    printf("\n\n%s", BAR);
+    printf("\n\n%s", THIN_BAR);
     printf("%s, %s, %s\n", cali->name_a, cali->name_b, cali->cali_info);
-    printf("%s", BAR);
+    printf("%s", THIN_BAR);
     index_of_tmrca = get_index_of_tmrca(treestr, cali->name_a, cali->name_b);
     insertion_char = treestr[index_of_tmrca];
 
