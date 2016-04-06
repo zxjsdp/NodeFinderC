@@ -12,6 +12,7 @@
 #define COMMENT_SYMBOL '#'
 
 const char *BAR = "=======================================================================\n";
+const char *THIN_BAR = "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
 
 struct Calibration {
     char *name_a;
