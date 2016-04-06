@@ -24,8 +24,13 @@ void print_cali_struct(size_t cali_num, struct Calibration *calis[cali_num])
 {
     int i;
 
+    printf("[VALID CALIBRATIONS]\n\n");
     for (i=0; i<cali_num; i++) {
-        printf("%s, %s, %s\n", calis[i]->name_a, calis[i]->name_b, calis[i]->cali_info);
+        printf(" %4d | %s, %s, %s\n",
+               i+1,
+               calis[i]->name_a,
+               calis[i]->name_b,
+               calis[i]->cali_info);
     }
 }
 
@@ -602,13 +607,11 @@ int argparser (int argc, char **argv,
     }
 
     if (*outfile_value)
-        printf("    -o   Output tree file:   %s\n", *outfile_value);
+        printf("    -o   Output tree file:   %s\n\n", *outfile_value);
     else {
         printf("\nERROR: \"-o output_tree_filename\" must be specified\n");
         exit(EXIT_FAILURE);
     }
-
-    printf("%s", BAR);
 
     for (index = optind; index < argc; index++)
         printf ("Non-option argument %s\n", argv[index]);
@@ -644,6 +647,9 @@ int main(int argc, char **argv)
     /* Configuration parser */
     struct Calibration *calis[valid_line_num];
     parse_config(valid_config_lines, valid_line_num ,calis);
+
+    /* Print valid calibration config information*/
+    print_cali_struct(valid_line_num, calis);
 
     /* Do calibrations */
     clean_str = multi_cali(clean_str, valid_line_num, calis);
