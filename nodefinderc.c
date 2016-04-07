@@ -46,6 +46,18 @@ void printcali(struct Calibration cali)
 // Utils functions
 // =======================================================
 
+void gen_blank_str(char **blank_str, size_t whitespace_num)
+{
+    int i;
+    static char temp_str[MAX_WHITESPACES_NUM];
+
+    *blank_str = temp_str;
+
+    for (i=0; i<whitespace_num; i++)
+        temp_str[i] = ' ';
+    temp_str[i] = '\0';
+}
+
 char* make_str_clean(char* input)
 {
     int i,j;
@@ -267,11 +279,14 @@ int get_index_of_tmrca(const char *treestr, const char *name_a, const char *name
     int insertion_list_a[MAX_INDEX_LIST_NUM], insertion_list_b[MAX_INDEX_LIST_NUM];
     int list_num_a, list_num_b;
     size_t name_a_index, name_b_index;
+    size_t treelen;
     int shorter_list_num;
     int i;
     int index_of_tmrca;
+    char *blank_str;
 
     index_of_tmrca = -1;
+    treelen = strlen(treestr);
 
     name_a_index = get_index_of_substring(treestr, name_a);
     name_b_index = get_index_of_substring(treestr, name_b);
@@ -309,11 +324,37 @@ int get_index_of_tmrca(const char *treestr, const char *name_a, const char *name
     }
 
     printf("[Common]:  %d\n", index_of_tmrca);
-    printf("\n[Insert]:  %s%s\n",
-        sliced_string(treestr, index_of_tmrca-20, index_of_tmrca),
-        sliced_string(treestr, index_of_tmrca, index_of_tmrca+20));
-    printf("[Insert]:                   ->||<-                  \n");
-    printf("[Insert]:                 Insert Here               \n");
+
+    if ((index_of_tmrca < CALI_DISPLAY_HALF_WIDTH) && \
+            (treelen - index_of_tmrca >= CALI_DISPLAY_HALF_WIDTH)){
+        gen_blank_str(&blank_str, CALI_DISPLAY_HALF_WIDTH - index_of_tmrca);
+        printf("%s\n", blank_str);
+        printf("\n[Insert]:  %s%s%s\n",
+               blank_str,
+               sliced_string(treestr, 0, index_of_tmrca),
+               sliced_string(treestr,
+                             index_of_tmrca,
+                             index_of_tmrca + CALI_DISPLAY_HALF_WIDTH));
+    } else if (index_of_tmrca >= CALI_DISPLAY_HALF_WIDTH && \
+            treelen - index_of_tmrca < CALI_DISPLAY_HALF_WIDTH) {
+        printf("\n[Insert]:  %s\n",
+               sliced_string(treestr, index_of_tmrca-CALI_DISPLAY_HALF_WIDTH, treelen));
+    } else if (index_of_tmrca < CALI_DISPLAY_HALF_WIDTH && \
+            treelen - index_of_tmrca < CALI_DISPLAY_HALF_WIDTH) {
+        gen_blank_str(&blank_str, CALI_DISPLAY_HALF_WIDTH - index_of_tmrca);
+        printf("\n[Insert]:  %s%s\n",
+               blank_str,
+               sliced_string(treestr, 0, treelen));
+    } else {
+        printf("\n[Insert]:  %s\n",
+               sliced_string(treestr,
+                             index_of_tmrca-CALI_DISPLAY_HALF_WIDTH,
+                             index_of_tmrca+CALI_DISPLAY_HALF_WIDTH));
+    }
+    gen_blank_str(&blank_str, CALI_DISPLAY_HALF_WIDTH - 3);
+    printf("[Insert]:  %s->||<-\n", blank_str);
+    gen_blank_str(&blank_str, CALI_DISPLAY_HALF_WIDTH - 5);
+    printf("[Insert]:  %sInsert Here\n", blank_str);
 
     // printf("Index of tMRCA: %d\n", index_of_tmrca);
     return index_of_tmrca;
@@ -652,6 +693,7 @@ int main(int argc, char **argv)
 
     /* Do calibrations */
     clean_str = multi_cali(clean_str, valid_line_num, calis);
+    printf("\n%s\n", clean_str);
 
     /* Save output to file */
     write_str_to_file(outfile_value, clean_str);

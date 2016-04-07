@@ -5,11 +5,43 @@
 #include <string.h>
 #include <unistd.h>
 
-#define NODEFINDERC_VERSION "1.1.6"
-#define MAX_INDEX_LIST_NUM 200
-#define MULTIPLE_OF_BUFSIZE 2
+/* ===================================================================== */
+/* Options you may want to change*/
+/* ===================================================================== */
+/* The maximum line numbers for calibration configs (default: 500) */
 #define MAX_CONFIG_LINE_LEN 500
+
+/* The length of insertion point display.
+ * For example, default value (20):
+ *           |      -> 20 <-     ||     -> 20 <-     |
+ * [Insert]:  b,c)>0.05<0.07,(d,e)))>0.1<0.2,(f,g))>0.
+ * [Insert]:                   ->||<-
+ * [Insert]:                 Insert Here
+ */
+#define CALI_DISPLAY_HALF_WIDTH 20
+
+/* The max size of ancestor insertion point list. (default: 400) */
+#define MAX_INDEX_LIST_NUM 400
+
+/* ===================================================================== */
+/* Options generally don't need to be changed*/
+/* ===================================================================== */
+
+/* NodeFinder version */
+#define NODEFINDERC_VERSION "1.1.6"
+
+/* Symbol used for comment lines. Lines starts with this will be ignored.
+ * (defualt: '#')*/
 #define COMMENT_SYMBOL '#'
+
+/* The max whitespaces number used in gen_blank_str() function to
+ * get a string consists of whitespaces only. (default: 200) */
+#define MAX_WHITESPACES_NUM 200
+
+/* The buffer multiple size used by add_cali() and modify_exists_cali() fucntion
+ * for adding calibration string. (default: 2) */
+#define MULTIPLE_OF_BUFSIZE 2
+
 
 const char *BAR = "=======================================================================\n";
 const char *THIN_BAR = "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
@@ -31,6 +63,7 @@ void printcali(struct Calibration cali);
 
 
 // Utils functions
+void gen_blank_str(char **blank_str, size_t whitespace_num);
 char* make_str_clean(char* input);
 char *stripchar(char *str, const char c);
 size_t countchar(const char *s, const char c);
