@@ -10,6 +10,8 @@
 #define MULTIPLE_OF_BUFSIZE 2
 #define MAX_CONFIG_LINE_LEN 500
 #define COMMENT_SYMBOL '#'
+#define MAX_WHITESPACES_NUM 200
+#define CALI_DISPLAY_HALF_WIDTH 20
 
 const char *BAR = "=======================================================================\n";
 const char *THIN_BAR = "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
@@ -31,6 +33,7 @@ void printcali(struct Calibration cali);
 
 
 // Utils functions
+void gen_blank_str(char **blank_str, size_t whitespace_num);
 char* make_str_clean(char* input);
 char *stripchar(char *str, const char c);
 size_t countchar(const char *s, const char c);
