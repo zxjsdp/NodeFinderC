@@ -28,7 +28,7 @@
 /* ===================================================================== */
 
 /* NodeFinder version */
-#define NODEFINDERC_VERSION "1.1.6"
+#define NODEFINDERC_VERSION "1.1.7"
 
 /* Symbol used for comment lines. Lines starts with this will be ignored.
  * (defualt: '#')*/
