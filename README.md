@@ -1,6 +1,8 @@
 NodeFinderC
 ===========
 
+![NodeFinderC GIF](resources/NodeFinderC.gif)
+
 Introduction
 ------------
 
