@@ -6,9 +6,9 @@ NodeFinderC
 Introduction
 ------------
 
-NodeFinderC is C implementation of NodeFinder program(Originally implemented with Python).
+NodeFinderC is C implementation of NodeFinder program (Originally implemented with Python).
 
-Precompiled binary executables can be downloaded here: [Windows & Linux & MacOS executables](https://github.com/zxjsdp/NodeFinderC/tree/master/bin/).
+Precompiled binary executables are available here: [Windows & Linux & MacOS executables](https://github.com/zxjsdp/NodeFinderC/tree/master/bin/).
 
 If you prefer programs with GUI (Graphical User Interface), please check the GUI version of NodeFinder: [NodeFinderGUI](https://github.com/zxjsdp/NodeFinderGUI).
 
@@ -49,7 +49,7 @@ Tips:
 
 - `-i`, `-c`, and `-o` must be specified.
 - `-i` means input_tree.nwk, which is a Newick format tree file;
-- `-c` means config_file.txt, please refer to **Configuaration File Syntax** part;
+- `-c` means config_file.txt, please refer to [**Configuaration File Syntax**](https://github.com/zxjsdp/NodeFinderC#configuration-file-syntax) part;
 - `-o` means output_tree.nwk, which will be the new generated output Newick format tree file.
 - `-h` will print help message then quit, whether other arguments were specified or not.
 - `-v` will print version info then quit, whether other arguments were specified or not.
@@ -68,8 +68,8 @@ Overview:
 
 Tips:
 
-- Elemenets in each line should be seperated by commas (halfwidth): `,`;
-- Each config line must end with a semicolon (halfwidth): `;`;
-- Spaces, newlines, tabs are acceptable in config file, the program will ignore them;
-- You can comment a line (make it ignored) by adding # at the beginning of the line;
+- Elemenets in each line should be seperated by commas: `,` (halfwidth);
+- Each config line must end with a semicolon: `;` (halfwidth);
+- Spaces, newlines, and tabs are acceptable in config file, the program will ignore them;
+- You can comment a line (make it ignored) by adding `#` at the beginning of the line;
 
