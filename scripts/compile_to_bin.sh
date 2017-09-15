@@ -24,6 +24,7 @@ fi
 printf "You are on the %s platform (%s)\n\n" "$OS" "$UNAMES"
 
 PROGRAM_NAME=../bin/nodefinderc-$OS
+mkdir -p ../bin
 
 echo 'Start compling...'
 echo ../nodefinderc.c -o $PROGRAM_NAME

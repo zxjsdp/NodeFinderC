@@ -1,4 +1,5 @@
 #define _GNU_SOURCE
+
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,32 +12,29 @@
 // print functions
 // =======================================================
 
-void print_array(const int arr[], int size)
-{
+void print_array(const int arr[], int size) {
     int i;
 
     printf("[Ancestor List]:  ");
-    for (i=0; i<size; i++)
+    for (i = 0; i < size; i++)
         printf("%d ", arr[i]);
     printf("\n");
 }
 
-void print_cali_struct(size_t cali_num, struct Calibration *calis[cali_num])
-{
+void print_cali_struct(size_t cali_num, struct Calibration *calis[cali_num]) {
     int i;
 
     printf("[VALID CALIBRATIONS]\n\n");
-    for (i=0; i<cali_num; i++) {
+    for (i = 0; i < cali_num; i++) {
         printf(" %4d | %s, %s, %s\n",
-               i+1,
+               i + 1,
                calis[i]->name_a,
                calis[i]->name_b,
                calis[i]->cali_info);
     }
 }
 
-void printcali(struct Calibration cali)
-{
+void printcali(struct Calibration cali) {
     printf("%s, %s, %s\n", cali.name_a, cali.name_b, cali.cali_info);
 }
 
@@ -46,30 +44,27 @@ void printcali(struct Calibration cali)
 // Utils functions
 // =======================================================
 
-void gen_blank_str(char **blank_str, size_t whitespace_num)
-{
+void gen_blank_str(char **blank_str, size_t whitespace_num) {
     int i;
     static char temp_str[MAX_WHITESPACES_NUM];
 
     *blank_str = temp_str;
 
-    for (i=0; i<whitespace_num; i++)
+    for (i = 0; i < whitespace_num; i++)
         temp_str[i] = ' ';
     temp_str[i] = '\0';
 }
 
-char* make_str_clean(char* input)
-{
-    int i,j;
-    char *output=input;
-    for (i = 0, j = 0; i<strlen(input); i++,j++)
-    {
+char *make_str_clean(char *input) {
+    int i, j;
+    char *output = input;
+    for (i = 0, j = 0; i < strlen(input); i++, j++) {
         if (input[i] != ' ' && input[i] != '\t' && input[i] != '\n' && input[i] != '\r')
-            output[j]=input[i];
+            output[j] = input[i];
         else
             j--;
     }
-    output[j]=0;
+    output[j] = 0;
     return output;
 }
 
@@ -79,8 +74,7 @@ char* make_str_clean(char* input)
 //     return len_b < len_a ? 0 : strncmp(str_a, str_b, len_a) == 0;
 // }
 
-char *stripchar(char *str, const char c)
-{
+char *stripchar(char *str, const char c) {
     size_t size;
     char *s;
     char *end;
@@ -101,14 +95,13 @@ char *stripchar(char *str, const char c)
     return s;
 }
 
-size_t countchar(const char *s, const char c)
-{
+size_t countchar(const char *s, const char c) {
     int i;
     size_t count;
 
     count = 0;
 
-    for (i=0; s[i]; i++) {
+    for (i = 0; s[i]; i++) {
         if (s[i] == c)
             count++;
     }
@@ -116,14 +109,12 @@ size_t countchar(const char *s, const char c)
     return count;
 }
 
-size_t get_index_of_substring(const char *srcstr, const char *substr)
-{
+size_t get_index_of_substring(const char *srcstr, const char *substr) {
     return strstr(srcstr, substr) - srcstr;
 }
 
 
-void reverse_array(int arr[], int start, int end)
-{
+void reverse_array(int arr[], int start, int end) {
     int temp;
     while (start < end) {
         temp = arr[start];
@@ -134,8 +125,7 @@ void reverse_array(int arr[], int start, int end)
     }
 }
 
-char *sliced_string(const char *str, int start, int end)
-{
+char *sliced_string(const char *str, int start, int end) {
     if (start >= end) {
         printf("start index must be smaller than end index while slicing\n");
         exit(EXIT_FAILURE);
@@ -148,8 +138,7 @@ char *sliced_string(const char *str, int start, int end)
     return s;
 }
 
-char **split_by_delim(const char *str, const char *delim, size_t *num_tokens)
-{
+char **split_by_delim(const char *str, const char *delim, size_t *num_tokens) {
     char *s = strdup(str);
     size_t tokens_alloc = 1;
     size_t tokens_used = 0;
@@ -157,8 +146,8 @@ char **split_by_delim(const char *str, const char *delim, size_t *num_tokens)
     char *token, *strtok_ctx;
 
     for (token = strtok_r(s, delim, &strtok_ctx);
-            token != NULL;
-            token = strtok_r(NULL, delim, &strtok_ctx)) {
+         token != NULL;
+         token = strtok_r(NULL, delim, &strtok_ctx)) {
         if (tokens_used == tokens_alloc) {
             tokens_alloc *= 2;
             tokens = realloc(tokens, tokens_alloc * sizeof(char *));
@@ -178,22 +167,20 @@ char **split_by_delim(const char *str, const char *delim, size_t *num_tokens)
 }
 
 char *concat_three_str(const size_t bufsize, const char *str1,
-                       const char *str2, const char *str3)
-{
+                       const char *str2, const char *str3) {
     char *buf = (char *) malloc(bufsize);
     snprintf(buf, bufsize, "%s%s%s", str1, str2, str3);
 
     return buf;
 }
 
-char *read_whole_str(const char *filename)
-{
+char *read_whole_str(const char *filename) {
     FILE *fp;
     long lsize;
     char *buffer;
 
-    fp = fopen(filename , "r");
-    if(!fp) {
+    fp = fopen(filename, "r");
+    if (!fp) {
         perror(filename);
         exit(1);
     }
@@ -203,15 +190,15 @@ char *read_whole_str(const char *filename)
     rewind(fp);
 
     /* allocate memory for entire content */
-    buffer = calloc(1, lsize+1);
-    if(!buffer) {
+    buffer = calloc(1, lsize + 1);
+    if (!buffer) {
         fclose(fp);
-        fputs("memory alloc fails",stderr);
+        fputs("memory alloc fails", stderr);
         exit(1);
     }
 
     /* copy the file into the buffer */
-    if(1 != fread(buffer, lsize, 1, fp)) {
+    if (1 != fread(buffer, lsize, 1, fp)) {
         fclose(fp);
         free(buffer);
         fputs("entire read fails", stderr);
@@ -223,8 +210,7 @@ char *read_whole_str(const char *filename)
     return buffer;
 }
 
-void write_str_to_file(const char *filename, const char *out_str)
-{
+void write_str_to_file(const char *filename, const char *out_str) {
     FILE *fp;
 
     fp = fopen(filename, "w");
@@ -246,14 +232,12 @@ void write_str_to_file(const char *filename, const char *out_str)
 // NodeFinder functions
 // =======================================================
 
-void print_version()
-{
+void print_version() {
     printf("NodeFinderC Version: %s\n", NODEFINDERC_VERSION);
     exit(EXIT_SUCCESS);
 }
 
-void get_insertion_list(const char *treestr, int *insertion_list, int *list_num, int indexnow)
-{
+void get_insertion_list(const char *treestr, int *insertion_list, int *list_num, int indexnow) {
     size_t treelen = strlen(treestr);
     int count;
     int i;
@@ -261,7 +245,7 @@ void get_insertion_list(const char *treestr, int *insertion_list, int *list_num,
     count = 0;
     *list_num = 0;
 
-    for (i=indexnow; i<treelen; i++) {
+    for (i = indexnow; i < treelen; i++) {
         if (treestr[i] == '(') {
             count++;
         } else if (treestr[i] == ')') {
@@ -274,8 +258,7 @@ void get_insertion_list(const char *treestr, int *insertion_list, int *list_num,
     }
 }
 
-int get_index_of_tmrca(const char *treestr, const char *name_a, const char *name_b)
-{
+int get_index_of_tmrca(const char *treestr, const char *name_a, const char *name_b) {
     int insertion_list_a[MAX_INDEX_LIST_NUM], insertion_list_b[MAX_INDEX_LIST_NUM];
     int list_num_a, list_num_b;
     size_t name_a_index, name_b_index;
@@ -297,8 +280,8 @@ int get_index_of_tmrca(const char *treestr, const char *name_a, const char *name
     get_insertion_list(treestr, insertion_list_b, &list_num_b, name_b_index);
 
     // reverse array for finding the first common value in arrays
-    reverse_array(insertion_list_a, 0, list_num_a-1);
-    reverse_array(insertion_list_b, 0, list_num_b-1);
+    reverse_array(insertion_list_a, 0, list_num_a - 1);
+    reverse_array(insertion_list_b, 0, list_num_b - 1);
 
     print_array(insertion_list_a, list_num_a);
     print_array(insertion_list_b, list_num_b);
@@ -311,14 +294,14 @@ int get_index_of_tmrca(const char *treestr, const char *name_a, const char *name
     // [69, 37, 25, 14, 3]
     //          |
     // [69, 37, 25, 12]
-    for (i=0; i<shorter_list_num; i++) {
+    for (i = 0; i < shorter_list_num; i++) {
         if (i == shorter_list_num - 1 && insertion_list_a[i] == insertion_list_b[i]) {
             index_of_tmrca = insertion_list_a[i];
             break;
         }
         // printf("%d | %d\n", insertion_list_a[i], insertion_list_b[i]);
         if (insertion_list_a[i] != insertion_list_b[i]) {
-            index_of_tmrca = insertion_list_a[i-1];
+            index_of_tmrca = insertion_list_a[i - 1];
             break;
         }
     }
@@ -326,7 +309,7 @@ int get_index_of_tmrca(const char *treestr, const char *name_a, const char *name
     printf("[Common]:  %d\n", index_of_tmrca);
 
     if ((index_of_tmrca < CALI_DISPLAY_HALF_WIDTH) && \
-            (treelen - index_of_tmrca >= CALI_DISPLAY_HALF_WIDTH)){
+            (treelen - index_of_tmrca >= CALI_DISPLAY_HALF_WIDTH)) {
         gen_blank_str(&blank_str, CALI_DISPLAY_HALF_WIDTH - index_of_tmrca);
         printf("%s\n", blank_str);
         printf("\n[Insert]:  %s%s%s\n",
@@ -338,7 +321,7 @@ int get_index_of_tmrca(const char *treestr, const char *name_a, const char *name
     } else if (index_of_tmrca >= CALI_DISPLAY_HALF_WIDTH && \
             treelen - index_of_tmrca < CALI_DISPLAY_HALF_WIDTH) {
         printf("\n[Insert]:  %s\n",
-               sliced_string(treestr, index_of_tmrca-CALI_DISPLAY_HALF_WIDTH, treelen));
+               sliced_string(treestr, index_of_tmrca - CALI_DISPLAY_HALF_WIDTH, treelen));
     } else if (index_of_tmrca < CALI_DISPLAY_HALF_WIDTH && \
             treelen - index_of_tmrca < CALI_DISPLAY_HALF_WIDTH) {
         gen_blank_str(&blank_str, CALI_DISPLAY_HALF_WIDTH - index_of_tmrca);
@@ -348,8 +331,8 @@ int get_index_of_tmrca(const char *treestr, const char *name_a, const char *name
     } else {
         printf("\n[Insert]:  %s\n",
                sliced_string(treestr,
-                             index_of_tmrca-CALI_DISPLAY_HALF_WIDTH,
-                             index_of_tmrca+CALI_DISPLAY_HALF_WIDTH));
+                             index_of_tmrca - CALI_DISPLAY_HALF_WIDTH,
+                             index_of_tmrca + CALI_DISPLAY_HALF_WIDTH));
     }
     gen_blank_str(&blank_str, CALI_DISPLAY_HALF_WIDTH - 3);
     printf("[Insert]:  %s->||<-\n", blank_str);
@@ -360,8 +343,7 @@ int get_index_of_tmrca(const char *treestr, const char *name_a, const char *name
     return index_of_tmrca;
 }
 
-char *get_exists_cali(const char *right_part)
-{
+char *get_exists_cali(const char *right_part) {
     char *cali_pointer;
     char *exists_cali_info;
     int cali_len;
@@ -375,8 +357,10 @@ char *get_exists_cali(const char *right_part)
     while (*cali_pointer != '\0') {
         if (in_cali_flag == 0)
             break;
-        switch(*cali_pointer) {
-            case ',': case ')': case ';':
+        switch (*cali_pointer) {
+            case ',':
+            case ')':
+            case ';':
                 in_cali_flag = 0;
                 break;
             default:
@@ -389,15 +373,16 @@ char *get_exists_cali(const char *right_part)
     return exists_cali_info;
 }
 
-char *find_non_cali_pointer(const char *right_part)
-{
+char *find_non_cali_pointer(const char *right_part) {
     char *non_cali_pointer;
 
     non_cali_pointer = strdup(right_part);
 
     while (*non_cali_pointer != '\0') {
         switch (*non_cali_pointer) {
-            case ',': case ')': case ';':
+            case ',':
+            case ')':
+            case ';':
                 return non_cali_pointer;
             default:
                 non_cali_pointer++;
@@ -407,8 +392,7 @@ char *find_non_cali_pointer(const char *right_part)
     return NULL;
 }
 
-char *add_cali(const char *treestr, int index_of_tmrca, const char *cali_info)
-{
+char *add_cali(const char *treestr, int index_of_tmrca, const char *cali_info) {
     char *left_part, *right_part;
     size_t treelen = strlen(treestr);
     // Use some dirty code. Assumes that length of tree with calibration is no
@@ -421,13 +405,12 @@ char *add_cali(const char *treestr, int index_of_tmrca, const char *cali_info)
     return concat_three_str(buflen, left_part, cali_info, right_part);
 }
 
-char *modify_exists_cali(const char *treestr, int index_of_tmrca, const char *cali_info)
-{
+char *modify_exists_cali(const char *treestr, int index_of_tmrca, const char *cali_info) {
     char *left_part, *right_part;
     size_t treelen = strlen(treestr);
     // Use some dirty code. Assumes that length of tree with calibration is no
     // longer than 2 times of tree without calibration
-    size_t buflen = MULTIPLE_OF_BUFSIZE *treelen;
+    size_t buflen = MULTIPLE_OF_BUFSIZE * treelen;
 
     left_part = sliced_string(treestr, 0, index_of_tmrca);
     right_part = sliced_string(treestr, index_of_tmrca, treelen);
@@ -440,8 +423,7 @@ char *modify_exists_cali(const char *treestr, int index_of_tmrca, const char *ca
     return concat_three_str(buflen, left_part, cali_info, right_part);
 }
 
-char *single_cali(char *treestr, struct Calibration *cali)
-{
+char *single_cali(char *treestr, struct Calibration *cali) {
     int index_of_tmrca;
     char insertion_char;
 
@@ -458,9 +440,15 @@ char *single_cali(char *treestr, struct Calibration *cali)
             // no calibration at this index before
             treestr = add_cali(treestr, index_of_tmrca, cali->cali_info);
             break;
-        case '>': case '<': case '@':
-        case '0': case '1': case 39:  // 39 means '\''
-        case '"': case '$': case ':':
+        case '>':
+        case '<':
+        case '@':
+        case '0':
+        case '1':
+        case 39:  // 39 means '\''
+        case '"':
+        case '$':
+        case ':':
             // there is already calibration at this index
             treestr = modify_exists_cali(treestr, index_of_tmrca, cali->cali_info);
             break;
@@ -469,12 +457,11 @@ char *single_cali(char *treestr, struct Calibration *cali)
     return treestr;
 }
 
-char *multi_cali(char *clean_str, int cali_num, struct Calibration *calis[cali_num])
-{
+char *multi_cali(char *clean_str, int cali_num, struct Calibration *calis[cali_num]) {
     int i;
     struct Calibration *cali_now;
 
-    for (i=0; i<cali_num; i++) {
+    for (i = 0; i < cali_num; i++) {
         cali_now = calis[i];
         // printf("%s, %s, %s\n", cali_now->name_a, cali_now->name_b, cali_now->cali_info);
         clean_str = single_cali(clean_str, cali_now);
@@ -482,8 +469,7 @@ char *multi_cali(char *clean_str, int cali_num, struct Calibration *calis[cali_n
     return clean_str;
 }
 
-size_t read_config_lines(const char *config_file_name, char *valid_config_lines[])
-{
+size_t read_config_lines(const char *config_file_name, char *valid_config_lines[]) {
     FILE *fp;
     char *line = NULL;
     size_t len = 0;
@@ -511,8 +497,7 @@ size_t read_config_lines(const char *config_file_name, char *valid_config_lines[
 }
 
 void parse_config(char *valid_config_lines[], size_t valid_line_num,
-                  struct Calibration *calis[valid_line_num])
-{
+                  struct Calibration *calis[valid_line_num]) {
     int i;
     char **elements;
     size_t elements_num_per_line;
@@ -522,13 +507,13 @@ void parse_config(char *valid_config_lines[], size_t valid_line_num,
         exit(EXIT_FAILURE);
     }
 
-    for (i=0; i<valid_line_num; i++) {
+    for (i = 0; i < valid_line_num; i++) {
         // Remove trailing ';' if exists
         valid_config_lines[i] = stripchar(valid_config_lines[i], ';');
         // elements: {"name_a", "name_b", "cali_info"}
         elements = split_by_delim(valid_config_lines[i], ",", &elements_num_per_line);
         if (elements_num_per_line != 3) {
-            printf("Config file syntax error. Line: %d\n", i+1);
+            printf("Config file syntax error. Line: %d\n", i + 1);
             exit(1);
         }
 
@@ -539,8 +524,7 @@ void parse_config(char *valid_config_lines[], size_t valid_line_num,
     }
 }
 
-void show_help_message()
-{
+void show_help_message() {
     printf("[USAGE]\n\n");
     printf("    /path/to/nodefinderc -i infile -c config_file -o output_file\n\n");
     printf("[ARGUMENTS]\n\n");
@@ -559,11 +543,10 @@ void show_help_message()
     exit(EXIT_SUCCESS);
 }
 
-int argparser (int argc, char **argv,
-               char **infile_value,
-               char **outfile_value,
-               char **config_file_value)
-{
+int argparser(int argc, char **argv,
+              char **infile_value,
+              char **outfile_value,
+              char **config_file_value) {
     int i;
     int index;
     int c;
@@ -577,7 +560,7 @@ int argparser (int argc, char **argv,
     *config_file_value = NULL;
     opterr = 0;
 
-    while ((c = getopt (argc, argv, "hvi:c:o:")) != -1)
+    while ((c = getopt(argc, argv, "hvi:c:o:")) != -1)
         switch (c) {
             case 'h':
                 help_flag = 1;
@@ -596,23 +579,23 @@ int argparser (int argc, char **argv,
                 break;
             case '?':
                 if (optopt == 'i')
-                    fprintf (stderr,
-                             "Option -%c requires an argument (input tree file name).\n",
-                             optopt);
+                    fprintf(stderr,
+                            "Option -%c requires an argument (input tree file name).\n",
+                            optopt);
                 else if (optopt == 'c')
-                    fprintf (stderr,
-                             "Option -%c requires an argument (config file name).\n",
-                             optopt);
+                    fprintf(stderr,
+                            "Option -%c requires an argument (config file name).\n",
+                            optopt);
                 else if (optopt == 'o')
-                    fprintf (stderr,
-                             "Option -%c requires an argument (output tree file name).\n",
-                             optopt);
-                else if (isprint (optopt))
-                    fprintf (stderr, "Unknown option `-%c'.\n", optopt);
+                    fprintf(stderr,
+                            "Option -%c requires an argument (output tree file name).\n",
+                            optopt);
+                else if (isprint(optopt))
+                    fprintf(stderr, "Unknown option `-%c'.\n", optopt);
                 else
-                    fprintf (stderr,
-                             "Unknown option character `\\x%x'.\n",
-                             optopt);
+                    fprintf(stderr,
+                            "Unknown option character `\\x%x'.\n",
+                            optopt);
                 show_help_message();
                 return 1;
             default:
@@ -627,7 +610,7 @@ int argparser (int argc, char **argv,
 
     printf("%s", BAR);
     printf("[COMMAND USED]\n\n    ");
-    for (i=0; i<argc; i++) {
+    for (i = 0; i < argc; i++) {
         printf("%s ", argv[i]);
     }
     printf("\n\n");
@@ -654,12 +637,11 @@ int argparser (int argc, char **argv,
     }
 
     for (index = optind; index < argc; index++)
-        printf ("Non-option argument %s\n", argv[index]);
+        printf("Non-option argument %s\n", argv[index]);
     return 0;
 }
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
     int argparser_state;
     char *infile_value;
     char *outfile_value;
@@ -686,7 +668,7 @@ int main(int argc, char **argv)
 
     /* Configuration parser */
     struct Calibration *calis[valid_line_num];
-    parse_config(valid_config_lines, valid_line_num ,calis);
+    parse_config(valid_config_lines, valid_line_num, calis);
 
     /* Print valid calibration config information*/
     print_cali_struct(valid_line_num, calis);
