@@ -39,5 +39,8 @@ cmake-build-debug
 .idea
 CMakeLists.*
 
+# output executable path
+bin
+
 # Tree Files
-*.nwk
+
