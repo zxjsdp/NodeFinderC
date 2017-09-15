@@ -33,6 +33,7 @@ nodefinderc
 *.dSYM/
 *.stackdump
 data
+cmake-build-debug
 
 #JetBrains
 .idea
