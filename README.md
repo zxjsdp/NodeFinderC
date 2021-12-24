@@ -8,7 +8,7 @@ Introduction
 
 NodeFinderC is C implementation of NodeFinder program (Originally implemented with Python).
 
-Precompiled binary executables are available here: [Windows & Linux & MacOS executables](https://github.com/zxjsdp/NodeFinderC/tree/master/bin/).
+Precompiled binary executables are available here: [Windows & Linux & MacOS executables](https://github.com/zxjsdp/NodeFinderC/releases/).
 
 If you prefer programs with GUI (Graphical User Interface), please check the GUI version of NodeFinder: [NodeFinderGUI](https://github.com/zxjsdp/NodeFinderGUI).
 
@@ -73,3 +73,20 @@ Tips:
 - Spaces, newlines, and tabs are acceptable in config file, the program will ignore them;
 - You can comment a line (make it ignored) by adding `#` at the beginning of the line;
 
+Implementation
+--------------
+
+Given two species, this program finds all ancestor nodes for each species by
+using stack (to exclude other monophyletic group) and parenthesis. Then compare
+these two ancestor node list and find the index of most recent common
+ancestor nodes.
+
+For example:
+
+    List of ancestor nodes index:
+    species1:     [57, 62, 73, 102, 162, 214, 258]
+                                ^    ^    ^    ^
+                                |    |    |    |
+    species2: [39, 48, 81, 94, 102, 162, 214, 258]
+
+    Then 102 will be the index of most recent common ancestor node.
