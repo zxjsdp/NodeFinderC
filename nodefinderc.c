@@ -513,7 +513,7 @@ void parse_config(char *valid_config_lines[], size_t valid_line_num,
         // elements: {"name_a", "name_b", "cali_info"}
         elements = split_by_delim(valid_config_lines[i], ",", &elements_num_per_line);
         if (elements_num_per_line != 3) {
-            printf("Config file syntax error. Line: %d\n", i + 1);
+            printf("[ERROR] [Line %d] Config file syntax error: There must be 3 elements per config line!\n", i + 1);
             exit(1);
         }
 

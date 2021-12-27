@@ -43,4 +43,5 @@ CMakeLists.*
 bin
 
 # Tree Files
+sample/output_tree.nwk
 

@@ -9,6 +9,7 @@ help:
 
 install:
 	@echo 'Compile NodeFinderC to executable...'
+	mkdir -p bin
 	gcc nodefinderc.c -o bin/nodefinderc-latest
 
 clean:
